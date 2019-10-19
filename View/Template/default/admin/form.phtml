@@ -21,7 +21,9 @@ use Krystal\Form\Element;
             </div>
 
             <?= Element::hidden('id', $group['id']); ?>
+
             <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
+            <?= Element::link($this->translate('Back'), $this->url('Preferences:Admin:Group@indexAction'), ['class' => 'btn btn-danger']); ?>
 
           </fieldset>
         </form>
