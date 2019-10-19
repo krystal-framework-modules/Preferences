@@ -11,6 +11,12 @@ use Krystal\Form\Element;
         $this->url('Preferences:Admin:Group@addAction'),
         ['class' => 'btn btn-success']
     ); ?>
+
+    <?= Element::link(
+        $this->translate('Add new item'),
+        $this->url('Preferences:Admin:Item@addAction'),
+        ['class' => 'btn btn-success']
+    ); ?>
 </div>
 
 <div class="row">
