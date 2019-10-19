@@ -26,7 +26,7 @@ final class Module extends AbstractModule
     public function getServiceProviders()
     {
         return array(
-            'groupService' => new GroupService($this->createMapper('\Preferences\Storage\MySQL'))
+            'groupService' => new GroupService($this->createMapper('\Preferences\Storage\MySQL\GroupMapper'))
         );
     }
 }
