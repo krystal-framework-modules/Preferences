@@ -28,6 +28,16 @@ final class GroupService extends AbstractService
     }
 
     /**
+     * Returns last group id
+     * 
+     * @return int
+     */
+    public function getLastId()
+    {
+        return $this->groupMapper->getMaxId();
+    }
+
+    /**
      * Converts raw row into entity object
      * 
      * @return mixed
