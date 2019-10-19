@@ -15,6 +15,22 @@ final class Module extends AbstractModule
     public function getRoutes()
     {
         return array(
+            // Groups
+            '/admin/groups' => array(
+                'controller' => 'Admin:Group@indexAction'
+            ),
+            '/admin/groups/add' => array(
+                'controller' => 'Admin:Group@addAction'
+            ),
+            '/admin/groups/edit/(:var)' => array(
+                'controller' => 'Admin:Group@editAction'
+            ),
+            '/admin/groups/delete/(:var)' => array(
+                'controller' => 'Admin:Group@deleteAction'
+            ),
+            '/admin/groups/save' => array(
+                'controller' => 'Admin:Group@saveAction'
+            )
         );
     }
 
