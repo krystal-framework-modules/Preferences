@@ -23,4 +23,19 @@ final class GroupMapper extends AbstractMapper
     {
         return 'id';
     }
+
+    /**
+     * Fetch all groups
+     * 
+     * @param boolean $sort Whether sorting is required
+     * @return array
+     */
+    public function fetchAll($sort)
+    {
+        $db = $this->db->select('*')
+                       ->from(self::getTableName())
+                       ->orderBy($sort ? 'order' : array('id' => 'DESC'));
+
+        return $db->queryAll();
+    }
 }
