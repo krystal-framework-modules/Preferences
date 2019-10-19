@@ -1,0 +1,56 @@
+<?php
+
+use Krystal\Widget\GridView\GridViewWidget;
+use Krystal\Form\Element;
+
+?>
+
+<div class="row">
+    <div class="col-6">
+        <h2><?php $this->show('Groups'); ?> <small>(<?= count($groups); ?>)</small></h2>
+    </div>
+
+    <div class="col-6 text-right">
+        <p>
+            <?= Element::link(
+                $this->translate('Add new group'),
+                $this->url('Preferences:Admin:Group@addAction'),
+                ['class' => 'btn btn-success']
+            ); ?>
+        </p>
+    </div>
+</div>
+
+<?= $this->widget(new GridViewWidget($groups, [
+    'columns' => [
+        [
+            'column' => 'id',
+            'label' => '#'
+        ],
+
+        [
+            'column' => 'name'
+        ],
+
+        [
+            'column' => 'order',
+            'label' => 'Sorting order'
+        ]
+    ],
+
+    'actions' => [
+        'edit' => function($row){
+            return Element::icon(
+                'fas fa-edit',
+                $this->url('Preferences:Admin:Group@editAction', [$row['id']])
+            );
+        },
+
+        'remove' => function($row){
+            return Element::icon(
+                'fas fa-trash-alt',
+                $this->url('Preferences:Admin:Group@deleteAction', [$row['id']])
+            );
+        }
+    ]
+])); ?>

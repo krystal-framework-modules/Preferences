@@ -1,0 +1,29 @@
+<?php
+
+use Krystal\Form\Element;
+
+?>
+
+<div class="row">
+    <div class="col-lg-6">
+        <form method="POST" action="<?= $this->url('Preferences:Admin:Group@saveAction'); ?>">
+          <fieldset>
+            <legend><?php $this->show($group['id'] ? 'Update the group' : 'Add new group'); ?></legend>
+
+            <div class="form-group">
+              <label><?php $this->show('Name'); ?></label>
+              <?= Element::text('name', $group['name'], ['class' => 'form-control']); ?>
+            </div>
+
+            <div class="form-group">
+              <label><?php $this->show('Sorting order'); ?></label>
+              <?= Element::number('order', $group['order'], ['class' => 'form-control', 'min' => 0]); ?>
+            </div>
+
+            <?= Element::hidden('id', $group['id']); ?>
+            <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
+
+          </fieldset>
+        </form>
+    </div>
+</div>
