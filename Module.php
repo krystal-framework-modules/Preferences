@@ -4,6 +4,7 @@ namespace Preferences;
 
 use Krystal\Application\Module\AbstractModule;
 use Preferences\Service\GroupService;
+use Preferences\Service\ItemService;
 
 final class Module extends AbstractModule
 {
@@ -30,6 +31,20 @@ final class Module extends AbstractModule
             ),
             '/admin/groups/save' => array(
                 'controller' => 'Admin:Group@saveAction'
+            ),
+
+            // Items
+            '/admin/items/add' => array(
+                'controller' => 'Admin:Item@addAction'
+            ),
+            '/admin/items/edit/(:var)' => array(
+                'controller' => 'Admin:Item@editAction'
+            ),
+            '/admin/items/delete/(:var)' => array(
+                'controller' => 'Admin:Item@deleteAction'
+            ),
+            '/admin/items/save' => array(
+                'controller' => 'Admin:Item@saveAction'
             )
         );
     }
@@ -42,7 +57,8 @@ final class Module extends AbstractModule
     public function getServiceProviders()
     {
         return array(
-            'groupService' => new GroupService($this->createMapper('\Preferences\Storage\MySQL\GroupMapper'))
+            'groupService' => new GroupService($this->createMapper('\Preferences\Storage\MySQL\GroupMapper')),
+            'itemService' => new ItemService($this->createMapper('\Preferences\Storage\MySQL\ItemMapper')),
         );
     }
 }

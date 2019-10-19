@@ -4,3 +4,12 @@ CREATE TABLE `user_pref_groups` (
     `order` INT NOT NULL COMMENT 'Sorting order',
     `name` varchar(255) NOT NULL COMMENT 'Group name'
 );
+
+CREATE TABLE `user_pref_groups_items` (
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `group_id` INT NOT NULL COMMENT 'Attached group ID',
+    `order` INT NOT NULL COMMENT 'Sorting order',
+    `name` varchar(255) NOT NULL COMMENT 'Group name',
+
+    FOREIGN KEY (group_id) REFERENCES user_pref_groups(id) ON DELETE CASCADE
+);

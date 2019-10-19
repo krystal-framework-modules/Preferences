@@ -14,8 +14,15 @@ final class Group extends AbstractSiteController
      */
     public function indexAction()
     {
+        $itemService = $this->getModuleService('itemService');
+        $groupService = $this->getModuleService('groupService');
+
+        $groupId = $this->request->hasQuery('id') ? $this->request->getQuery('id') : $groupService->getLastId();
+
         return $this->view->render('admin/index', array(
-            'groups' => $this->getModuleService('groupService')->fetchAll(false)
+            'groups' => $groupService->fetchAll(false),
+            'groupId' => $groupId,
+            'items' => $itemService->fetchAll($groupId, false)
         ));
     }
 
@@ -27,7 +34,7 @@ final class Group extends AbstractSiteController
      */
     private function createForm($group)
     {
-        return $this->view->render('admin/form', array(
+        return $this->view->render('admin/form.group', array(
             'group' => $group
         ));
     }

@@ -4,37 +4,26 @@ namespace Preferences\Service;
 
 use Krystal\Application\Model\AbstractService;
 use Krystal\Stdlib\VirtualEntity;
-use Krystal\Stdlib\ArrayUtils;
-use Preferences\Storage\MySQL\GroupMapper;
+use Preferences\Storage\MySQL\ItemMapper;
 
-final class GroupService extends AbstractService
+final class ItemService extends AbstractService
 {
     /**
      * Any compliant mapper
      * 
-     * @var \Preferences\Storage\MySQL\GroupMapper
+     * @var \Preferences\Storage\MySQL\ItemMapper
      */
-    private $groupMapper;
+    private $itemMapper;
 
     /**
      * State initialization
      * 
-     * @param \Preferences\Storage\MySQL\GroupMapper $groupMapper
+     * @param \Preferences\Storage\MySQL\ItemMapper $itemMapper
      * @return void
      */
-    public function __construct(GroupMapper $groupMapper)
+    public function __construct(ItemMapper $itemMapper)
     {
-        $this->groupMapper = $groupMapper;
-    }
-
-    /**
-     * Returns last group id
-     * 
-     * @return int
-     */
-    public function getLastId()
-    {
-        return $this->groupMapper->getMaxId();
+        $this->itemMapper = $itemMapper;
     }
 
     /**
@@ -48,24 +37,15 @@ final class GroupService extends AbstractService
     }
 
     /**
-     * Fetch a hash-map of groups
+     * Fetch all items associated with group id
      * 
-     * @return array
-     */
-    public function fetchList()
-    {
-        return ArrayUtils::arrayList($this->groupMapper->fetchAll(false), 'id', 'name');
-    }
-
-    /**
-     * Fetch all groups
-     * 
+     * @param int $groupId
      * @param boolean $sort Whether sorting is required
      * @return array
      */
-    public function fetchAll($sort)
+    public function fetchAll($groupId, $sort)
     {
-        return $this->groupMapper->fetchAll($sort);
+        return $this->itemMapper->fetchAll($groupId, $sort);
     }
 
     /**
@@ -76,7 +56,7 @@ final class GroupService extends AbstractService
      */
     public function fetchById($id)
     {
-        return $this->groupMapper->findByPk($id);
+        return $this->itemMapper->findByPk($id);
     }
 
     /**
@@ -87,7 +67,7 @@ final class GroupService extends AbstractService
      */
     public function deleteById($id)
     {
-        return $this->groupMapper->deleteByPk($id);
+        return $this->itemMapper->deleteByPk($id);
     }
 
     /**
@@ -98,6 +78,6 @@ final class GroupService extends AbstractService
      */
     public function save(array $input)
     {
-        return $this->groupMapper->persist($input);
+        return $this->itemMapper->persist($input);
     }
 }

@@ -5,52 +5,106 @@ use Krystal\Form\Element;
 
 ?>
 
+<div class="text-right">
+    <?= Element::link(
+        $this->translate('Add new group'),
+        $this->url('Preferences:Admin:Group@addAction'),
+        ['class' => 'btn btn-success']
+    ); ?>
+
+    <?= Element::link(
+        $this->translate('Add new item'),
+        $this->url('Preferences:Admin:Item@addAction'),
+        ['class' => 'btn btn-success']
+    ); ?>
+</div>
+
 <div class="row">
     <div class="col-6">
         <h2><?php $this->show('Groups'); ?> <small>(<?= count($groups); ?>)</small></h2>
-    </div>
 
-    <div class="col-6 text-right">
-        <p>
-            <?= Element::link(
-                $this->translate('Add new group'),
-                $this->url('Preferences:Admin:Group@addAction'),
-                ['class' => 'btn btn-success']
-            ); ?>
-        </p>
+        <?= $this->widget(new GridViewWidget($groups, [
+            'rowAttributes' => [
+                'class' => function($row) use ($groupId){
+                    return $row['id'] == $groupId ? 'table-success' : null;
+                }
+            ],
+            'columns' => [
+                [
+                    'column' => 'id',
+                    'label' => '#'
+                ],
+
+                [
+                    'column' => 'name',
+                    'value' => function($row){
+                        $url = $this->url('Preferences:Admin:Group@indexAction', ['id' => $row['id']]);
+
+                        return Element::link($row['name'], $url);
+                    }
+                ],
+
+                [
+                    'column' => 'order',
+                    'label' => 'Sorting order'
+                ]
+            ],
+
+            'actions' => [
+                'edit' => function($row){
+                    return Element::icon(
+                        'fas fa-edit',
+                        $this->url('Preferences:Admin:Group@editAction', [$row['id']])
+                    );
+                },
+
+                'remove' => function($row){
+                    return Element::icon(
+                        'fas fa-trash-alt',
+                        $this->url('Preferences:Admin:Group@deleteAction', [$row['id']])
+                    );
+                }
+            ]
+        ])); ?>
+    </div>
+    
+    <div class="col-6">
+        <h2><?php $this->show('Items'); ?> <small>(<?= count($items); ?>)</small></h2>
+
+        <?= $this->widget(new GridViewWidget($items, [
+            'columns' => [
+                [
+                    'column' => 'id',
+                    'label' => '#'
+                ],
+
+                [
+                    'column' => 'name'
+                ],
+
+                [
+                    'column' => 'order',
+                    'label' => 'Sorting order'
+                ]
+            ],
+
+            'actions' => [
+                'edit' => function($row){
+                    return Element::icon(
+                        'fas fa-edit',
+                        $this->url('Preferences:Admin:Item@editAction', [$row['id']])
+                    );
+                },
+
+                'remove' => function($row){
+                    return Element::icon(
+                        'fas fa-trash-alt',
+                        $this->url('Preferences:Admin:Item@deleteAction', [$row['id']])
+                    );
+                }
+            ]
+        ])); ?>        
     </div>
 </div>
 
-<?= $this->widget(new GridViewWidget($groups, [
-    'columns' => [
-        [
-            'column' => 'id',
-            'label' => '#'
-        ],
 
-        [
-            'column' => 'name'
-        ],
-
-        [
-            'column' => 'order',
-            'label' => 'Sorting order'
-        ]
-    ],
-
-    'actions' => [
-        'edit' => function($row){
-            return Element::icon(
-                'fas fa-edit',
-                $this->url('Preferences:Admin:Group@editAction', [$row['id']])
-            );
-        },
-
-        'remove' => function($row){
-            return Element::icon(
-                'fas fa-trash-alt',
-                $this->url('Preferences:Admin:Group@deleteAction', [$row['id']])
-            );
-        }
-    ]
-])); ?>
