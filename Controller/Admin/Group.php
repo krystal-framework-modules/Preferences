@@ -17,7 +17,7 @@ final class Group extends AbstractSiteController
         $itemService = $this->getModuleService('itemService');
         $groupService = $this->getModuleService('groupService');
 
-        $groupId = $groupService->getLastId();
+        $groupId = $this->request->hasQuery('id') ? $this->request->getQuery('id') : $groupService->getLastId();
 
         return $this->view->render('admin/index', array(
             'groups' => $groupService->fetchAll(false),

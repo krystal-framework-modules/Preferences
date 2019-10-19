@@ -30,7 +30,12 @@ use Krystal\Form\Element;
                 ],
 
                 [
-                    'column' => 'name'
+                    'column' => 'name',
+                    'value' => function($row){
+                        $url = $this->url('Preferences:Admin:Group@indexAction', ['id' => $row['id']]);
+
+                        return Element::link($row['name'], $url);
+                    }
                 ],
 
                 [
