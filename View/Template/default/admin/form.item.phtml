@@ -1,0 +1,36 @@
+<?php
+
+use Krystal\Form\Element;
+
+?>
+
+<div class="row">
+    <div class="col-lg-6">
+        <form method="POST" action="<?= $this->url('Preferences:Admin:Item@saveAction'); ?>">
+          <fieldset>
+            <legend><?php $this->show($item['id'] ? 'Update the item' : 'Add new item'); ?></legend>
+
+            <div class="form-group">
+              <label><?php $this->show('Name'); ?></label>
+              <?= Element::text('name', $item['name'], ['class' => 'form-control']); ?>
+            </div>
+
+            <div class="form-group">
+              <label><?php $this->show('Group'); ?></label>
+              <?= Element::select('group_id', $groups, $item['group_id'], ['class' => 'form-control']); ?>
+            </div>
+
+            <div class="form-group">
+              <label><?php $this->show('Sorting order'); ?></label>
+              <?= Element::number('order', $item['order'], ['class' => 'form-control', 'min' => 0]); ?>
+            </div>
+
+            <?= Element::hidden('id', $item['id']); ?>
+
+            <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
+            <?= Element::link($this->translate('Back'), $this->url('Preferences:Admin:Group@indexAction'), ['class' => 'btn btn-danger']); ?>
+
+          </fieldset>
+        </form>
+    </div>
+</div>
