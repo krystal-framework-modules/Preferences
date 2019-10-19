@@ -32,6 +32,20 @@ final class Module extends AbstractModule
             '/admin/groups/save' => array(
                 'controller' => 'Admin:Group@saveAction'
             ),
+
+            // Items
+            '/admin/items/add' => array(
+                'controller' => 'Admin:Item@addAction'
+            ),
+            '/admin/items/edit/(:var)' => array(
+                'controller' => 'Admin:Item@editAction'
+            ),
+            '/admin/items/delete/(:var)' => array(
+                'controller' => 'Admin:Item@deleteAction'
+            ),
+            '/admin/items/save' => array(
+                'controller' => 'Admin:Item@saveAction'
+            )
         );
     }
 
