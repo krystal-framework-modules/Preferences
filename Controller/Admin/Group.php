@@ -27,7 +27,7 @@ final class Group extends AbstractSiteController
      */
     private function createForm($group)
     {
-        return $this->view->render('admin/form', array(
+        return $this->view->render('admin/form.group', array(
             'group' => $group
         ));
     }
