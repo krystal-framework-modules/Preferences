@@ -3,6 +3,7 @@
 namespace Preferences;
 
 use Krystal\Application\Module\AbstractModule;
+use Preferences\Service\GroupService;
 
 final class Module extends AbstractModule
 {
@@ -25,6 +26,7 @@ final class Module extends AbstractModule
     public function getServiceProviders()
     {
         return array(
+            'groupService' => new GroupService($this->createMapper('\Preferences\Storage\MySQL'))
         );
     }
 }
