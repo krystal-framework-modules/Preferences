@@ -4,6 +4,7 @@ namespace Preferences\Service;
 
 use Krystal\Application\Model\AbstractService;
 use Krystal\Stdlib\VirtualEntity;
+use Krystal\Stdlib\ArrayUtils;
 use Preferences\Storage\MySQL\GroupMapper;
 
 final class GroupService extends AbstractService
@@ -34,6 +35,16 @@ final class GroupService extends AbstractService
     protected function toEntity(array $row)
     {
         return false;
+    }
+
+    /**
+     * Fetch a hash-map of groups
+     * 
+     * @return array
+     */
+    public function fetchList()
+    {
+        return ArrayUtils::arrayList($this->groupMapper->fetchAll(false), 'id', 'name');
     }
 
     /**
