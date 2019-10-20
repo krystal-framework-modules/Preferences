@@ -34,7 +34,7 @@ final class ValueMapper extends AbstractMapper
         // Columns to be selected
         $columns = [
             ValueMapper::column('id'),
-            ValueMapper::column('name') => 'value',
+            ValueMapper::column('value'),
             GroupMapper::column('name') => 'group',
             ItemMapper::column('name') => 'item'
         ];

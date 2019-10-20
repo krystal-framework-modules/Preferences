@@ -11,8 +11,8 @@ use Krystal\Form\Element;
             <legend><?php $this->show($value['id'] ? 'Update the value' : 'Add new value'); ?></legend>
 
             <div class="form-group">
-              <label><?php $this->show('Name'); ?></label>
-              <?= Element::text('name', $value['name'], ['class' => 'form-control']); ?>
+              <label><?php $this->show('Value'); ?></label>
+              <?= Element::text('value', $value['value'], ['class' => 'form-control']); ?>
             </div>
 
             <div class="form-group">
@@ -24,7 +24,7 @@ use Krystal\Form\Element;
             <?= Element::hidden('item_id', $value['item_id']); ?>
 
             <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
-            <?= Element::link($this->translate('Back'), $this->url('Preferences:Admin:Item@editAction', [$value->getItemId()]), ['class' => 'btn btn-danger']); ?>
+            <?= Element::link($this->translate('Back'), $this->url('Preferences:Admin:Item@editAction', [$value['item_id']]), ['class' => 'btn btn-danger']); ?>
 
           </fieldset>
         </form>
