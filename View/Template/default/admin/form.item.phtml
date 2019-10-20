@@ -6,6 +6,8 @@ use Krystal\Form\Element;
 ?>
 
 <?php if (!empty($groups)): ?>
+
+<?php if ($item['id']): ?>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link active" data-toggle="tab" href="#item"><?php $this->show('Item'); ?></a>
@@ -14,6 +16,7 @@ use Krystal\Form\Element;
     <a class="nav-link" data-toggle="tab" href="#values"><?php $this->show('Values'); ?> (<?= count($values); ?>)</a>
   </li>
 </ul>
+<?php endif; ?>
 
 <div id="myTabContent" class="tab-content">
   <div class="tab-pane fade active show mt-3" id="item">
