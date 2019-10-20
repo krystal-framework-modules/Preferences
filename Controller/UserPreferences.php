@@ -15,7 +15,7 @@ final class UserPreferences extends AbstractSiteController
     public function indexAction()
     {
         $this->view->getPluginBag()->appendLastScript('@Preferences/pref.js');
-        
+
         $groups = $this->getModuleService('valueService')->fetchComplete($this->getAuthService()->getId());
 
         return $this->view->render('profile/form', array(

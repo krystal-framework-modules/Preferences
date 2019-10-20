@@ -41,9 +41,10 @@ final class ValueMapper extends AbstractMapper
      * Fetch values with group and item names
      * 
      * @param int|null $userId
+     * @param boolean $strict Whether to fetch missing items regarding current user id
      * @return array
      */
-    public function fetchComplete($userId = null)
+    public function fetchComplete($userId = null, $strict = false)
     {
         // Columns to be selected
         $columns = [
@@ -70,7 +71,7 @@ final class ValueMapper extends AbstractMapper
                        ));
 
         if ($userId !== null) {
-            $db->leftJoin(UserRelationMapper::getTableName(), array(
+            $db->join($strict ? 'INNER' : 'LEFT', UserRelationMapper::getTableName(), array(
                 UserRelationMapper::column('master_id') => (int) $userId,
                 UserRelationMapper::column('slave_id') => self::getRawColumn('id'),
             ));
