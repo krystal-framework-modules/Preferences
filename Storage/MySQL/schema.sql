@@ -10,6 +10,7 @@ CREATE TABLE `user_pref_groups_items` (
     `group_id` INT NOT NULL COMMENT 'Attached group ID',
     `order` INT NOT NULL COMMENT 'Sorting order',
     `name` varchar(255) NOT NULL COMMENT 'Group name',
+    `multiple` BOOLEAN NOT NULL COMMENT 'Whether multi-select is allowed',
 
     FOREIGN KEY (group_id) REFERENCES user_pref_groups(id) ON DELETE CASCADE
 );

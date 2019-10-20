@@ -41,6 +41,10 @@ use Krystal\Form\Element;
                   <?= Element::number('order', $item['order'], ['class' => 'form-control', 'min' => 0]); ?>
                 </div>
 
+                <div class="form-check">
+                    <p><label class="form-check-label"><?= Element::checkbox('multiple', (bool) $item['multiple'], ['class' => 'form-check-input']); ?> <?php $this->show('Allow multiple'); ?></label></p>
+                </div>
+                
                 <?= Element::hidden('id', $item['id']); ?>
 
                 <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
