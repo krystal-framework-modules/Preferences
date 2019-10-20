@@ -3,6 +3,7 @@
 namespace Preferences\Storage\MySQL;
 
 use Krystal\Db\Sql\AbstractMapper;
+use Krystal\Db\Sql\RawSqlFragment;
 
 final class ValueMapper extends AbstractMapper
 {
@@ -39,9 +40,10 @@ final class ValueMapper extends AbstractMapper
     /**
      * Fetch values with group and item names
      * 
+     * @param int|null $userId
      * @return array
      */
-    public function fetchComplete()
+    public function fetchComplete($userId = null)
     {
         // Columns to be selected
         $columns = [
@@ -50,6 +52,10 @@ final class ValueMapper extends AbstractMapper
             GroupMapper::column('name') => 'group',
             ItemMapper::column('name') => 'item'
         ];
+
+        if ($userId !== null) {
+            $columns[] = new RawSqlFragment(sprintf('(%s = %s) AS `active`', UserRelationMapper::column('slave_id'), self::column('id')));
+        }
 
         $db = $this->db->select($columns)
                        ->from(self::getTableName())
@@ -61,6 +67,13 @@ final class ValueMapper extends AbstractMapper
                        ->leftJoin(GroupMapper::getTableName(), array(
                             GroupMapper::column('id') => ItemMapper::getRawColumn('group_id')
                        ));
+
+        if ($userId !== null) {
+            $db->leftJoin(UserRelationMapper::getTableName(), array(
+                UserRelationMapper::column('master_id') => $userId,
+                UserRelationMapper::column('slave_id') => self::getRawColumn('id'),
+            ));
+        }
 
         return $db->queryAll();
     }

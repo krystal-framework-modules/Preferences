@@ -54,12 +54,13 @@ final class ValueService extends AbstractService
     /**
      * Fetch values with group and item names
      * 
+     * @param int $userId
      * @return array
      */
-    public function fetchComplete()
+    public function fetchComplete($userId = null)
     {
         // Fetch all required data in its raw form
-        $rows = $this->valueMapper->fetchComplete();
+        $rows = $this->valueMapper->fetchComplete($userId);
 
         // Group by top-level, first
         $groups = ArrayUtils::arrayPartition($rows, 'group', false);
