@@ -10,6 +10,7 @@ CREATE TABLE `user_pref_groups_items` (
     `group_id` INT NOT NULL COMMENT 'Attached group ID',
     `order` INT NOT NULL COMMENT 'Sorting order',
     `name` varchar(255) NOT NULL COMMENT 'Group name',
+    `multiple` BOOLEAN NOT NULL COMMENT 'Whether multi-select is allowed',
 
     FOREIGN KEY (group_id) REFERENCES user_pref_groups(id) ON DELETE CASCADE
 );
@@ -21,4 +22,12 @@ CREATE TABLE `user_pref_groups_items_values` (
     `value` varchar(255) NOT NULL COMMENT 'Group name',
 
     FOREIGN KEY (item_id) REFERENCES user_pref_groups_items(id) ON DELETE CASCADE
+);
+
+CREATE TABLE `user_pref_groups_relation` (
+    `master_id` INT NOT NULL COMMENT 'User ID',
+    `slave_id` INT NOT NULL COMMENT 'Pref.Value ID',
+
+    FOREIGN KEY (master_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (slave_id) REFERENCES user_pref_groups_items_values(id) ON DELETE CASCADE
 );

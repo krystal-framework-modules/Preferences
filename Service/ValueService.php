@@ -38,14 +38,29 @@ final class ValueService extends AbstractService
     }
 
     /**
+     * Saves relation of users and their corresponding options
+     * 
+     * @param int $userId
+     * @param array $params
+     * @return boolean
+     */
+    public function saveRelation($userId, array $params)
+    {
+        $ids = isset($params['item']) ? array_keys($params['item']) : [];
+
+        return $this->valueMapper->saveRelation($userId, $ids);
+    }
+
+    /**
      * Fetch values with group and item names
      * 
+     * @param int $userId
      * @return array
      */
-    public function fetchComplete()
+    public function fetchComplete($userId = null)
     {
         // Fetch all required data in its raw form
-        $rows = $this->valueMapper->fetchComplete();
+        $rows = $this->valueMapper->fetchComplete($userId);
 
         // Group by top-level, first
         $groups = ArrayUtils::arrayPartition($rows, 'group', false);
@@ -65,7 +80,7 @@ final class ValueService extends AbstractService
                     $output[$group] = [];
                 }
 
-                $output[$group][$name] = ArrayUtils::arrayList($values, 'id', 'value');
+                $output[$group][$name] = $values;
             }
         }
 

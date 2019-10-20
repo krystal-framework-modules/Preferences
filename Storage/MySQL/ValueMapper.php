@@ -3,6 +3,7 @@
 namespace Preferences\Storage\MySQL;
 
 use Krystal\Db\Sql\AbstractMapper;
+use Krystal\Db\Sql\RawSqlFragment;
 
 final class ValueMapper extends AbstractMapper
 {
@@ -25,19 +26,37 @@ final class ValueMapper extends AbstractMapper
     }
 
     /**
+     * Saves relation of users and their corresponding options
+     * 
+     * @param int $userId
+     * @param array $params
+     * @return boolean
+     */
+    public function saveRelation($userId, array $params)
+    {
+        return $this->syncWithJunction(UserRelationMapper::getTableName(), $userId, $params);
+    }
+
+    /**
      * Fetch values with group and item names
      * 
+     * @param int|null $userId
      * @return array
      */
-    public function fetchComplete()
+    public function fetchComplete($userId = null)
     {
         // Columns to be selected
         $columns = [
             ValueMapper::column('id'),
             ValueMapper::column('value'),
             GroupMapper::column('name') => 'group',
-            ItemMapper::column('name') => 'item'
+            ItemMapper::column('name') => 'item',
+            ItemMapper::column('multiple')
         ];
+
+        if ($userId !== null) {
+            $columns[] = new RawSqlFragment(sprintf('(%s = %s) AS `active`', UserRelationMapper::column('slave_id'), self::column('id')));
+        }
 
         $db = $this->db->select($columns)
                        ->from(self::getTableName())
@@ -49,6 +68,13 @@ final class ValueMapper extends AbstractMapper
                        ->leftJoin(GroupMapper::getTableName(), array(
                             GroupMapper::column('id') => ItemMapper::getRawColumn('group_id')
                        ));
+
+        if ($userId !== null) {
+            $db->leftJoin(UserRelationMapper::getTableName(), array(
+                UserRelationMapper::column('master_id') => (int) $userId,
+                UserRelationMapper::column('slave_id') => self::getRawColumn('id'),
+            ));
+        }
 
         return $db->queryAll();
     }

@@ -44,5 +44,14 @@ return [
     ),
     '/admin/values/save' => array(
         'controller' => 'Admin:Value@saveAction'
+    ),
+
+    // User preferences
+    '/profile/preferences' => array(
+        'controller' => 'UserPreferences@indexAction'
+    ),
+
+    '/profile/preferences/save' => array(
+        'controller' => 'UserPreferences@saveAction'
     )
 ];

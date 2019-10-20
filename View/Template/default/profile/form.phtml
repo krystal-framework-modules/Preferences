@@ -1,0 +1,40 @@
+<?php
+
+use Krystal\Form\Element;
+
+?>
+
+<div class="row">
+    <div class="col-lg-6">
+        <form method="POST" action="<?= $this->url('Preferences:UserPreferences@saveAction'); ?>">
+          <fieldset>
+            <?php foreach ($groups as $group => $items): ?>
+            <legend><?= $group; ?></legend>
+
+            <?php foreach ($items as $name => $container): ?>
+            <div class="form-group">
+              <label><?php $this->show($name); ?></label>
+
+              <?php foreach ($container as $single): ?>
+              <div class="checkbox">
+                <label>
+                    <?php if ($single['multiple']): ?>
+                    <?= Element::checkbox(sprintf('item[%s]', $single['id']), (bool) $single['active'], [], false); ?>
+                    <?php else: ?>
+                    <?= Element::radio(sprintf('item[%s]', $single['id']), $single['value'], (bool) $single['active']); ?>
+                    <?php endif; ?>
+
+                    <?= $single['value']; ?>
+                </label>
+              </div>
+              <?php endforeach; ?>
+            </div>
+            <?php endforeach; ?>
+            
+            <?php endforeach; ?>
+
+            <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
+          </fieldset>
+        </form>
+    </div>
+</div>
