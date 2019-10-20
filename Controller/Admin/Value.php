@@ -5,7 +5,7 @@ namespace Preferences\Controller\Admin;
 use Site\Controller\AbstractSiteController;
 use Krystal\Stdlib\VirtualEntity;
 
-final class Item extends AbstractSiteController
+final class Value extends AbstractSiteController
 {
     /**
      * Renders a form
@@ -13,13 +13,11 @@ final class Item extends AbstractSiteController
      * @param mixed $entity
      * @return string
      */
-    private function createForm($item)
+    private function createForm($entity)
     {
-        return $this->view->render('admin/form.item', [
-            'item' => $item,
-            'groups' => $this->getModuleService('groupService')->fetchList(),
-            'values' => $item ? $this->getModuleService('valueService')->fetchAll($item['id'], false) : []
-        ]);
+        return $this->view->render('admin/form.value', array(
+            'value' => $entity
+        ));
     }
 
     /**
@@ -31,10 +29,10 @@ final class Item extends AbstractSiteController
     public function editAction($id)
     {
         // Find a record by its id, then render a form by calling $this->createForm() here...
-        $item = $this->getModuleService('itemService')->fetchById($id);
+        $value = $this->getModuleService('valueService')->fetchById($id);
 
-        if ($item) {
-            return $this->createForm($item);
+        if ($value) {
+            return $this->createForm($value);
         } else {
             return false;
         }
@@ -43,11 +41,15 @@ final class Item extends AbstractSiteController
     /**
      * Renders add form
      * 
+     * @param int $itemId
      * @return string
      */
-    public function addAction()
+    public function addAction($itemId)
     {
-        return $this->createForm(new VirtualEntity());
+        $value = new VirtualEntity();
+        $value->setItemId($itemId);
+
+        return $this->createForm($value);
     }
 
     /**
@@ -60,9 +62,9 @@ final class Item extends AbstractSiteController
         // Handle persisting here ...
         $input = $this->request->getPost();
 
-        $this->getModuleService('itemService')->save($input);
+        $this->getModuleService('valueService')->save($input);
 
-        $this->flashBag->set('success', !empty($input['id']) ? 'An item has been updated successfully' : 'An item has been created successfully');
+        $this->flashBag->set('success', !empty($input['id']) ? 'A value has been updated successfully' : 'A value has been created successfully');
         return 1;
     }
 
@@ -74,7 +76,7 @@ final class Item extends AbstractSiteController
      */
     public function deleteAction($id)
     {
-        if ($this->getModuleService('itemService')->deleteById($id)) {
+        if ($this->getModuleService('valueService')->deleteById($id)) {
             $this->flashBag->set('success', 'An item has been deleted successfully');
             $this->response->back();
         }
