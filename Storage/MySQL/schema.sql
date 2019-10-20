@@ -22,3 +22,11 @@ CREATE TABLE `user_pref_groups_items_values` (
 
     FOREIGN KEY (item_id) REFERENCES user_pref_groups_items(id) ON DELETE CASCADE
 );
+
+CREATE TABLE `user_pref_groups_relation` (
+    `master_id` INT NOT NULL COMMENT 'User ID',
+    `slave_id` INT NOT NULL COMMENT 'Pref.Value ID',
+
+    FOREIGN KEY (master_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (slave_id) REFERENCES user_pref_groups_items_values(id) ON DELETE CASCADE
+);
