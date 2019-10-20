@@ -25,6 +25,35 @@ final class ValueMapper extends AbstractMapper
     }
 
     /**
+     * Fetch values with group and item names
+     * 
+     * @return array
+     */
+    public function fetchComplete()
+    {
+        // Columns to be selected
+        $columns = [
+            ValueMapper::column('id'),
+            ValueMapper::column('name') => 'value',
+            GroupMapper::column('name') => 'group',
+            ItemMapper::column('name') => 'item'
+        ];
+
+        $db = $this->db->select($columns)
+                       ->from(self::getTableName())
+                       // Table relation
+                       ->leftJoin(ItemMapper::getTableName(), array(
+                            ItemMapper::column('id') => self::getRawColumn('item_id')
+                       ))
+                       // Group relation
+                       ->leftJoin(GroupMapper::getTableName(), array(
+                            GroupMapper::column('id') => ItemMapper::getRawColumn('group_id')
+                       ));
+
+        return $db->queryAll();
+    }
+
+    /**
      * Fetch all values by associated item id
      * 
      * @param int $itemId

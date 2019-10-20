@@ -4,6 +4,7 @@ namespace Preferences\Service;
 
 use Krystal\Application\Model\AbstractService;
 use Krystal\Stdlib\VirtualEntity;
+use Krystal\Stdlib\ArrayUtils;
 use Preferences\Storage\MySQL\ValueMapper;
 
 final class ValueService extends AbstractService
@@ -34,6 +35,41 @@ final class ValueService extends AbstractService
     protected function toEntity(array $row)
     {
         return false;
+    }
+
+    /**
+     * Fetch values with group and item names
+     * 
+     * @return array
+     */
+    public function fetchComplete()
+    {
+        // Fetch all required data in its raw form
+        $rows = $this->valueMapper->fetchComplete();
+
+        // Group by top-level, first
+        $groups = ArrayUtils::arrayPartition($rows, 'group', false);
+
+        $raw = [];
+
+        // Group by items now
+        foreach ($groups as $name => $items) {
+            $raw[$name] = ArrayUtils::arrayPartition($groups[$name], 'item', false);
+        }
+
+        $output = [];
+
+        foreach ($raw as $group => $items) {
+            foreach($items as $name => $values) {
+                if (!isset($new[$group])) {
+                    $output[$group] = [];
+                }
+
+                $output[$group][$name] = ArrayUtils::arrayList($values, 'id', 'value');
+            }
+        }
+
+        return $output;
     }
 
     /**
