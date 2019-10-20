@@ -38,6 +38,20 @@ final class ValueService extends AbstractService
     }
 
     /**
+     * Saves relation of users and their corresponding options
+     * 
+     * @param int $userId
+     * @param array $params
+     * @return boolean
+     */
+    public function saveRelation($userId, array $params)
+    {
+        $ids = isset($params['item']) ? array_keys($params['item']) : [];
+
+        return $this->valueMapper->saveRelation($userId, $ids);
+    }
+
+    /**
      * Fetch values with group and item names
      * 
      * @return array

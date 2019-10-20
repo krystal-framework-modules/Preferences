@@ -25,6 +25,18 @@ final class ValueMapper extends AbstractMapper
     }
 
     /**
+     * Saves relation of users and their corresponding options
+     * 
+     * @param int $userId
+     * @param array $params
+     * @return boolean
+     */
+    public function saveRelation($userId, array $params)
+    {
+        return $this->syncWithJunction(UserRelationMapper::getTableName(), $userId, $params);
+    }
+
+    /**
      * Fetch values with group and item names
      * 
      * @return array
