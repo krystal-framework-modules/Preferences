@@ -71,7 +71,7 @@ final class ValueMapper extends AbstractMapper
 
         if ($userId !== null) {
             $db->leftJoin(UserRelationMapper::getTableName(), array(
-                UserRelationMapper::column('master_id') => $userId,
+                UserRelationMapper::column('master_id') => (int) $userId,
                 UserRelationMapper::column('slave_id') => self::getRawColumn('id'),
             ));
         }
