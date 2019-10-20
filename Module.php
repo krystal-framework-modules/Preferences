@@ -5,6 +5,7 @@ namespace Preferences;
 use Krystal\Application\Module\AbstractModule;
 use Preferences\Service\GroupService;
 use Preferences\Service\ItemService;
+use Preferences\Service\ValueService;
 
 final class Module extends AbstractModule
 {
@@ -59,6 +60,7 @@ final class Module extends AbstractModule
         return array(
             'groupService' => new GroupService($this->createMapper('\Preferences\Storage\MySQL\GroupMapper')),
             'itemService' => new ItemService($this->createMapper('\Preferences\Storage\MySQL\ItemMapper')),
+            'valueService' => new ValueService($this->createMapper('\Preferences\Storage\MySQL\ValueMapper'))
         );
     }
 }
