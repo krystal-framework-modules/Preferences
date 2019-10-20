@@ -79,7 +79,7 @@ final class ValueService extends AbstractService
                     $output[$group] = [];
                 }
 
-                $output[$group][$name] = ArrayUtils::arrayList($values, 'id', 'value');
+                $output[$group][$name] = $values;
             }
         }
 
