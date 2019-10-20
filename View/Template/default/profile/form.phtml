@@ -17,7 +17,7 @@ use Krystal\Form\Element;
 
               <?php foreach ($container as $single): ?>
               <div class="checkbox">
-                <label><?= Element::checkbox(sprintf('item[%s]', $single['id']), false, [], false); ?> <?= $single['value']; ?></label>
+                <label><?= Element::checkbox(sprintf('item[%s]', $single['id']), (bool) $single['active'], [], false); ?> <?= $single['value']; ?></label>
               </div>
               <?php endforeach; ?>
             </div>
