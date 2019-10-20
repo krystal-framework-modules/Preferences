@@ -17,7 +17,15 @@ use Krystal\Form\Element;
 
               <?php foreach ($container as $single): ?>
               <div class="checkbox">
-                <label><?= Element::checkbox(sprintf('item[%s]', $single['id']), (bool) $single['active'], [], false); ?> <?= $single['value']; ?></label>
+                <label>
+                    <?php if ($single['multiple']): ?>
+                    <?= Element::checkbox(sprintf('item[%s]', $single['id']), (bool) $single['active'], [], false); ?>
+                    <?php else: ?>
+                    <?= Element::radio(sprintf('item[%s]', $single['id']), $single['value'], (bool) $single['active']); ?>
+                    <?php endif; ?>
+
+                    <?= $single['value']; ?>
+                </label>
               </div>
               <?php endforeach; ?>
             </div>

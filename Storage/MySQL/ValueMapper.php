@@ -50,7 +50,8 @@ final class ValueMapper extends AbstractMapper
             ValueMapper::column('id'),
             ValueMapper::column('value'),
             GroupMapper::column('name') => 'group',
-            ItemMapper::column('name') => 'item'
+            ItemMapper::column('name') => 'item',
+            ItemMapper::column('multiple')
         ];
 
         if ($userId !== null) {
