@@ -15,10 +15,11 @@ final class Item extends AbstractSiteController
      */
     private function createForm($item)
     {
-        return $this->view->render('admin/form.item', array(
+        return $this->view->render('admin/form.item', [
             'item' => $item,
-            'groups' => $this->getModuleService('groupService')->fetchList()
-        ));
+            'groups' => $this->getModuleService('groupService')->fetchList(),
+            'values' => $item ? $this->getModuleService('valueService')->fetchAll($item['id'], false) : []
+        ]);
     }
 
     /**

@@ -1,40 +1,101 @@
 <?php
 
+use Krystal\Widget\GridView\GridViewWidget;
 use Krystal\Form\Element;
 
 ?>
 
 <?php if (!empty($groups)): ?>
-<div class="row">
-    <div class="col-lg-6">
-        <form method="POST" action="<?= $this->url('Preferences:Admin:Item@saveAction'); ?>">
-          <fieldset>
-            <legend><?php $this->show($item['id'] ? 'Update the item' : 'Add new item'); ?></legend>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#item"><?php $this->show('Item'); ?></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#values"><?php $this->show('Values'); ?> (<?= count($values); ?>)</a>
+  </li>
+</ul>
 
-            <div class="form-group">
-              <label><?php $this->show('Name'); ?></label>
-              <?= Element::text('name', $item['name'], ['class' => 'form-control']); ?>
-            </div>
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane fade active show mt-3" id="item">
+    <div class="row">
+        <div class="col-lg-6">
+            <form method="POST" action="<?= $this->url('Preferences:Admin:Item@saveAction'); ?>">
+              <fieldset>
+                <legend><?php $this->show($item['id'] ? 'Update the item' : 'Add new item'); ?></legend>
 
-            <div class="form-group">
-              <label><?php $this->show('Group'); ?></label>
-              <?= Element::select('group_id', $groups, $item['group_id'], ['class' => 'form-control']); ?>
-            </div>
+                <div class="form-group">
+                  <label><?php $this->show('Name'); ?></label>
+                  <?= Element::text('name', $item['name'], ['class' => 'form-control']); ?>
+                </div>
 
-            <div class="form-group">
-              <label><?php $this->show('Sorting order'); ?></label>
-              <?= Element::number('order', $item['order'], ['class' => 'form-control', 'min' => 0]); ?>
-            </div>
+                <div class="form-group">
+                  <label><?php $this->show('Group'); ?></label>
+                  <?= Element::select('group_id', $groups, $item['group_id'], ['class' => 'form-control']); ?>
+                </div>
 
-            <?= Element::hidden('id', $item['id']); ?>
+                <div class="form-group">
+                  <label><?php $this->show('Sorting order'); ?></label>
+                  <?= Element::number('order', $item['order'], ['class' => 'form-control', 'min' => 0]); ?>
+                </div>
 
-            <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
-            <?= Element::link($this->translate('Back'), $this->url('Preferences:Admin:Group@indexAction'), ['class' => 'btn btn-danger']); ?>
+                <?= Element::hidden('id', $item['id']); ?>
 
-          </fieldset>
-        </form>
+                <?= Element::submit($this->translate('Submit'), ['class' => 'btn btn-primary']); ?>
+                <?= Element::link($this->translate('Back'), $this->url('Preferences:Admin:Group@indexAction'), ['class' => 'btn btn-danger']); ?>
+
+              </fieldset>
+            </form>
+        </div>
     </div>
+  </div>
+
+  <div class="tab-pane fade mt-3" id="values">
+    <h2><?php $this->show('Values'); ?> <small>(<?= count($values); ?>)</small></h2>
+
+    <p>
+        <?= Element::link(
+            $this->translate('Add new value'),
+            $this->url('Preferences:Admin:Value@addAction', [$item['id']]),
+            ['class' => 'btn btn-success']
+        ); ?>
+    </p>
+    
+    <?= $this->widget(new GridViewWidget($values, [
+        'columns' => [
+            [
+                'column' => 'id',
+                'label' => '#'
+            ],
+
+            [
+                'column' => 'name'
+            ],
+
+            [
+                'column' => 'order',
+                'label' => 'Sorting order'
+            ]
+        ],
+
+        'actions' => [
+            'edit' => function($row){
+                return Element::icon(
+                    'fas fa-edit',
+                    $this->url('Preferences:Admin:Value@editAction', [$row['id']])
+                );
+            },
+
+            'remove' => function($row){
+                return Element::icon(
+                    'fas fa-trash-alt',
+                    $this->url('Preferences:Admin:Value@deleteAction', [$row['id']])
+                );
+            }
+        ]
+    ])); ?>    
+  </div>
 </div>
+
 <?php else: ?>
 
 <p><?php $this->show('No available groups. To create items, you must create at least one group first'); ?></p>
